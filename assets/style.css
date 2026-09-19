@@ -1,74 +1,167 @@
-/* OnePunto: paper and ink, the same palette as the app. */
+/* OnePunto: the app's palette, type and motion. Black carries what matters;
+   the greys stay calm around it. */
 :root {
-  --paper: #e4e4e5;
-  --surface: #f7f7f7;
+  --paper: #dcdcdd;
+  --surface: #ebebec;
   --ink: #3c3c3c;
   --soft: #545454;
-  --line: #d2d2d2;
+  --line: #b6b6b6;
+  --empty: #707070;
+  --track: #d0d0d0;
+  --accent: #000;
+  --on-accent: #dcdcdd;
   --radius: 28px;
+  --curve: cubic-bezier(.05, .7, .1, 1);
+  --pop: cubic-bezier(.34, 1.56, .64, 1);
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #242424;
-    --surface: #2f2f2f;
+    --paper: #000;
+    --surface: #242424;
     --ink: #e4e4e5;
     --soft: #bebebe;
-    --line: #454545;
+    --line: #3c3c3c;
+    --empty: #949494;
+    --track: #3c3c3c;
+    --accent: #f7f7f7;
+    --on-accent: #000;
   }
 }
+
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 18px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* The app's own type: Roboto on Android, the system face elsewhere. */
+  font: 400 18px/1.6 Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
+h1, h2, h3 { color: var(--accent); font-weight: 700; letter-spacing: -.03em; line-height: 1.05; margin: 0; }
+p { margin: 0; }
 a { color: inherit; text-underline-offset: 3px; }
-a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
-.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-header.top { display: flex; align-items: center; justify-content: space-between; padding: 28px 0; }
-.lockup { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 600; font-size: 20px; letter-spacing: -0.01em; }
-.lockup svg { width: 32px; height: 32px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 10px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Header and footer */
+header.top { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; }
+.lockup { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--accent); font-weight: 600; font-size: 20px; letter-spacing: -.01em; }
+.lockup svg { width: 30px; height: 30px; }
 .lang { font-size: 15px; color: var(--soft); }
-.hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; padding: 48px 0 88px; }
-.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); margin: 0 0 20px; }
-h1 { font-size: clamp(44px, 7vw, 76px); line-height: 1.02; letter-spacing: -0.035em; margin: 0 0 24px; font-weight: 700; }
-.lead { font-size: 21px; color: var(--soft); margin: 0 0 36px; max-width: 30ch; }
-.pill { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: var(--paper); border-radius: 999px; padding: 14px 22px; font-weight: 600; font-size: 16px; }
-.pill::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px; }
-.card .label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); margin: 0 0 10px; }
-.card .goal { font-size: 28px; margin: 0 0 28px; letter-spacing: -0.01em; }
-.dots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; max-width: 320px; }
-.dot { aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--ink); }
-.dot.on { background: var(--ink); animation: fill 420ms ease-out both; animation-delay: calc(var(--i) * 90ms + 300ms); }
-.dot.today { box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 20px var(--ink); animation: none; background: transparent; }
-.meta { display: flex; justify-content: space-between; margin-top: 28px; font-weight: 600; }
-@keyframes fill { from { background: transparent; transform: scale(0.6); } to { background: var(--ink); transform: scale(1); } }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 0 88px; }
-.step h2 { font-size: 22px; margin: 18px 0 8px; letter-spacing: -0.01em; }
-.step p { margin: 0; color: var(--soft); }
-.num { font-weight: 700; font-size: 34px; letter-spacing: -0.03em; }
-.num b { font-weight: 700; }
-.promise { text-align: center; padding: 64px 0 96px; border-top: 1px solid var(--line); }
-.promise h2 { font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.03em; margin: 0 0 16px; }
-.promise p { color: var(--soft); max-width: 46ch; margin: 0 auto; }
 footer { border-top: 1px solid var(--line); padding: 28px 0 48px; font-size: 15px; color: var(--soft); display: flex; gap: 24px; flex-wrap: wrap; justify-content: space-between; }
 footer nav { display: flex; gap: 20px; }
+
+/* Hero: the bouncing dot lands as the headline's full stop. */
+.hero { min-height: calc(100svh - 80px); display: grid; place-items: center; text-align: center; padding: 24px 0 40px; }
+.hero h1 { font-size: clamp(52px, 11vw, 124px); line-height: .96; letter-spacing: -.05em; }
+.period { display: inline-block; width: .2em; height: .2em; margin-left: .04em; border-radius: 50%; background: var(--accent); }
+.lead { font-size: clamp(19px, 2.4vw, 24px); color: var(--soft); margin: 28px auto 36px; max-width: 26ch; }
+.pill { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--on-accent); border-radius: 999px; padding: 14px 24px; font-weight: 600; font-size: 16px; }
+.pill::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+.hint { display: inline-flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 64px; color: var(--soft); font-size: 14px; text-decoration: none; }
+.hint::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: hint 1.8s var(--curve) infinite; }
+@keyframes hint { 0%, 100% { transform: translateY(0); opacity: 1; } 55% { transform: translateY(14px); opacity: .35; } }
+
+/* Intro: the page waits behind a single dot, then unfolds out of it. */
+.intro .page { clip-path: circle(0px at 50% 50%); }
+.intro .period { visibility: hidden; }
+.stage { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+.drop { position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -28px 0 0 -14px; border-radius: 50%; background: var(--accent); transform-origin: 50% 100%; will-change: transform; }
+
+/* Dots, as the app draws them. */
+.grid { --dot: 30px; display: grid; grid-template-columns: repeat(7, var(--dot)); gap: calc(var(--dot) * .6); justify-content: center; }
+.dot { position: relative; width: var(--dot); height: var(--dot); border-radius: 50%; box-shadow: inset 0 0 0 max(1.5px, calc(var(--dot) * .075)) var(--empty); }
+.dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--accent); transform: scale(0); transition: transform .42s var(--pop); }
+.dot.on::after { transform: scale(1); }
+.dot.today { box-shadow: inset 0 0 0 max(1.5px, calc(var(--dot) * .075)) var(--accent); }
+.dot.today::before { content: ""; position: absolute; inset: 24%; border-radius: 50%; box-shadow: inset 0 0 0 max(1.3px, calc(var(--dot) * .065)) var(--accent); }
+.dot.ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 2px var(--accent); animation: ring .6s ease-out forwards; }
+@keyframes ring { from { transform: scale(1); opacity: .5; } to { transform: scale(1.8); opacity: 0; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+
+/* Story: one dot becomes the picture of a goal as the page scrolls. */
+.story .sticky { display: grid; justify-items: center; align-content: center; gap: 28px; padding: 64px 0; }
+.js .story { height: 300vh; }
+.js .story .sticky { position: sticky; top: 0; height: 100svh; padding: 0; }
+.captions { display: grid; width: 100%; text-align: center; font-size: clamp(28px, 4.6vw, 48px); }
+.captions h2 { grid-area: 1 / 1; font-size: inherit; opacity: 0; transform: translateY(.35em); transition: opacity .5s var(--curve), transform .5s var(--curve); }
+.captions h2.shown { opacity: 1; transform: none; }
+.story .card { padding: 28px; }
+.story .grid { --dot: min(34px, 7vw, 4.2svh); }
+.counter { display: flex; justify-content: space-between; gap: 16px; margin-top: 22px; font-variant-numeric: tabular-nums; }
+.counter b { color: var(--accent); font-weight: 600; }
+.counter span { color: var(--soft); }
+.track { height: 5px; border-radius: 5px; background: var(--track); margin-top: 22px; overflow: hidden; }
+.track i { display: block; height: 100%; width: 100%; background: var(--accent); border-radius: inherit; transform-origin: left; transform: scaleX(var(--p, .27)); transition: transform .42s var(--curve); }
+
+/* How it works */
+.section-title { font-size: clamp(36px, 5.6vw, 60px); margin-bottom: 40px; }
+.how { padding: 120px 0 40px; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.step { padding: 32px; }
+.num { font-weight: 700; font-size: 40px; line-height: 1; color: var(--accent); letter-spacing: -.04em; }
+.step h3 { font-size: 22px; margin: 22px 0 8px; letter-spacing: -.02em; }
+.step p, .detail p, .try-text p { color: var(--soft); }
+
+/* Try it: the square from the app, working. */
+.try { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 120px 0; }
+.try-text p { font-size: 20px; margin-top: 20px; max-width: 30ch; }
+.device { width: 100%; max-width: 360px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line); border-radius: 44px; padding: 28px 22px 22px; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .45); }
+.device .date { color: var(--soft); font-size: 14px; }
+.device .headline { display: grid; margin: 2px 0 16px; font-size: 26px; }
+.device .headline h3 { grid-area: 1 / 1; font-size: inherit; transition: opacity .3s var(--curve), transform .3s var(--curve); }
+.device .headline h3.leaving { opacity: 0; transform: translateY(-.3em); transition-timing-function: cubic-bezier(.3, 0, .8, .15); }
+.device .headline h3.coming { opacity: 0; transform: translateY(.3em); transition: none; }
+.device .card { padding: 20px; }
+.device .title { color: var(--accent); font-weight: 600; font-size: 15px; margin-bottom: 14px; }
+.device .grid { --dot: 26px; }
+.device .counter { margin-top: 16px; font-size: 15px; }
+.square { position: relative; display: grid; place-items: center; width: 84px; height: 84px; margin: 20px auto 0; padding: 0; border-radius: 30%; border: 1.5px solid var(--line); background: var(--surface); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .45s var(--curve), border-color .45s var(--curve), transform .26s var(--curve); }
+.square:active { transform: scale(.94); transition-duration: .11s; }
+.square::after { content: ""; width: 38px; height: 38px; border-radius: 50%; box-shadow: inset 0 0 0 4px var(--accent); transition: box-shadow .45s var(--curve), background .45s var(--curve); }
+.square.done { background: var(--accent); border-color: var(--accent); }
+.square.done::after { background: var(--paper); box-shadow: inset 0 0 0 4px var(--paper); animation: fill .56s var(--pop); }
+.square.pulse::before { content: ""; position: absolute; width: 38px; height: 38px; border-radius: 50%; box-shadow: 0 0 0 3px var(--paper); animation: ripple .7s ease-out forwards; }
+@keyframes fill { from { transform: scale(.45); } to { transform: scale(1); } }
+@keyframes ripple { from { transform: scale(1); opacity: .6; } to { transform: scale(2.1); opacity: 0; } }
+.device .tip { text-align: center; color: var(--soft); font-size: 13px; margin-top: 10px; min-height: 1.6em; }
+
+/* Details and promise */
+.details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 0 120px; }
+.detail { padding: 32px; }
+.detail h3 { font-size: 22px; margin-bottom: 10px; letter-spacing: -.02em; }
+.promise { text-align: center; padding: 104px 0 120px; border-top: 1px solid var(--line); }
+.promise h2 { font-size: clamp(38px, 6.4vw, 72px); letter-spacing: -.045em; }
+.promise p { color: var(--soft); max-width: 44ch; margin: 20px auto 36px; font-size: 20px; }
+
+/* Things that arrive as they scroll into view. */
+.js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--curve), transform .7s var(--curve); transition-delay: var(--d, 0s); }
+.js .reveal.in { opacity: 1; transform: none; }
+
+/* Legal pages */
 article.legal { max-width: 720px; padding: 24px 0 80px; }
-article.legal h1 { font-size: clamp(36px, 6vw, 52px); }
-article.legal h2 { font-size: 22px; margin: 44px 0 10px; letter-spacing: -0.01em; }
+article.legal h1 { font-size: clamp(36px, 6vw, 52px); margin-bottom: 20px; }
+article.legal h2 { font-size: 22px; margin: 44px 0 10px; letter-spacing: -.01em; }
 article.legal p, article.legal li { color: var(--ink); }
-article.legal .updated { color: var(--soft); margin-top: -8px; }
-article.legal .summary { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px 26px; font-size: 19px; }
+article.legal p + p { margin-top: 14px; }
+article.legal .updated { color: var(--soft); }
+article.legal .summary { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px 26px; font-size: 19px; margin-top: 24px; }
+
 @media (max-width: 820px) {
-  .hero { grid-template-columns: 1fr; gap: 40px; padding: 24px 0 64px; }
-  .steps { grid-template-columns: 1fr; }
-  .card { padding: 28px; }
+  .steps, .details, .try { grid-template-columns: 1fr; }
+  .try { gap: 40px; padding: 88px 0; }
+  .how { padding-top: 88px; }
+  .details { padding-bottom: 88px; }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 16px; }
+  .step, .detail { padding: 26px; }
+  .story .card { padding: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dot.on { animation: none; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
